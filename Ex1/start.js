@@ -1,4 +1,5 @@
 function start() {
+	/** @type {HTMLCanvasElement} */
 	const canvas = document.getElementById("my_canvas");
 	//Inicialize the GL contex
 	const gl = canvas.getContext("webgl2");
