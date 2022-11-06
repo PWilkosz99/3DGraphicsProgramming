@@ -31,7 +31,7 @@ function start() {
 		{
 			TexCoord = aTexCoord;
 			Color = color;
-			gl_Position = proj*view*model*vec4(position, 1.0);
+			gl_Position = proj * view * model * vec4(position, 1.0);
 		}	
 	`;
 
@@ -45,7 +45,8 @@ function start() {
 		uniform sampler2D texture2;
 		void main(void)
 		{
-			frag_color = mix(texture(texture1, TexCoord),texture(texture2, TexCoord),0.5);
+			//frag_color = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.5);
+			frag_color = texture(texture1, TexCoord) * vec4(Color, 1.0);
 			//frag_color = vec4(Color, 1.0);
 		}
 	`;
@@ -270,7 +271,6 @@ function start() {
 	image.onload = function () {
 		gl.bindTexture(gl.TEXTURE_2D, texture1);
 		gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
-
 		gl.generateMipmap(gl.TEXTURE_2D);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
@@ -291,9 +291,7 @@ function start() {
 	const srcFormat2 = gl.RGBA;
 	const srcType2 = gl.UNSIGNED_BYTE;
 	const pixel2 = new Uint8Array([0, 0, 255, 255]);
-	gl.texImage2D(gl.TEXTURE_2D, level2, internalFormat2,
-		width2, height2, border2, srcFormat2, srcType2,
-		pixel2);
+	gl.texImage2D(gl.TEXTURE_2D, level2, internalFormat2, width2, height2, border2, srcFormat2, srcType2, pixel2);
 	const image2 = new Image();
 	image2.onload = function () {
 		gl.bindTexture(gl.TEXTURE_2D, texture2);
@@ -306,9 +304,8 @@ function start() {
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 	};
 	image2.crossOrigin = "";
-	image2.src = "https://images.pexels.com/photos/866351/pexels-photo-866351.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
-
-	//gl.uniform1i(gl.getUniformLocation(program, "texture1"), 0);
+	image2.src = "https://cdn.pixabay.com/photo/2022/06/21/19/01/coast-7276345__340.jpg"
+	gl.uniform1i(gl.getUniformLocation(program, "texture1"), 0);
 	gl.uniform1i(gl.getUniformLocation(program, "texture2"), 1);
 
 	//-----------------------------------------------------------------------------------------------
@@ -338,22 +335,22 @@ function start() {
 		gl.activeTexture(gl.TEXTURE0);
 
 		gl.bindTexture(gl.TEXTURE_2D, texture1);
-		gl.drawArrays(gl.TRIANGLES, 0, 36);
+		gl.drawArrays(gl.TRIANGLES, 0, n_draw);
 
 		//2
 		// gl.bindTexture(gl.TEXTURE_2D, texture1);
-		// gl.drawArrays(gl.TRIANGLES, 0, 18);
+		// gl.drawArrays(gl.TRIANGLES, 0, n_draw/2);
 
 		// gl.bindTexture(gl.TEXTURE_2D, texture2);
-		// gl.drawArrays(gl.TRIANGLES, 18, 18)
+		// gl.drawArrays(gl.TRIANGLES, n_draw/2, n_draw);
 
 		//3
 		// gl.activeTexture(gl.TEXTURE0);
 		// gl.bindTexture(gl.TEXTURE_2D, texture1);
 		// gl.activeTexture(gl.TEXTURE1);
 		// gl.bindTexture(gl.TEXTURE_2D, texture2);
+		// gl.drawArrays(gl.TRIANGLES, 0, n_draw);
 
-		gl.drawArrays(gl.TRIANGLES, 0, n_draw);
 		//window.requestAnimationFrame(draw);
 		const FPS = 30;
 		setTimeout(() => { requestAnimationFrame(draw); }, 1000 / FPS);
