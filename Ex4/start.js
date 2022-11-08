@@ -166,7 +166,6 @@ function start() {
 	let cameraUp = glm.vec3(0, 1, 0);
 
 	function ustaw_kamere() {
-		console.log(pressedKey)
 		let cameraSpeed = 0.002 * elapsedTime;
 
 		if (pressedKey["ArrowUp"]) {
@@ -362,7 +361,6 @@ function start() {
 		// gl.activeTexture(gl.TEXTURE1);
 		// gl.bindTexture(gl.TEXTURE_2D, texture2);
 		// gl.drawArrays(gl.TRIANGLES, 0, n_draw);
-		console.log(projection)
 		switch (projection) {
 			default:
 			case 0: // mono
@@ -392,15 +390,16 @@ function start() {
 			case 2: //side by side
 				gl.viewport(canvas.width / 2, 0, canvas.width / 2, canvas.height);
 
-				StereoProjection(separateLeft, separateRight, seperateBottom, seperateTop, 12.99, -100, 0, 13, -0.1);
+				StereoProjection(separateLeft, separateRight, seperateBottom, seperateTop, 12.99, -100, 0, 13, eyeRed);
 				//StereoProjection(-6, 6, -4.8, 4.8, 12.99, -100, 0, 13, -0.1);
 
 				gl.bindTexture(gl.TEXTURE_2D, texture1);
 				gl.drawArrays(gl.TRIANGLES, 0, n_draw);
 
 				gl.clear(gl.DEPTH_BUFFER_BIT);
-				StereoProjection(separateLeft, separateRight, seperateBottom, seperateTop, 12.99, -100, 0, 13, 0.1);
+
 				gl.viewport(0, 0, canvas.width / 2, canvas.height);
+				StereoProjection(separateLeft, separateRight, seperateBottom, seperateTop, 12.99, -100, 0, 13, eyeBlue);
 
 				gl.bindTexture(gl.TEXTURE_2D, texture1);
 				gl.drawArrays(gl.TRIANGLES, 0, n_draw);
@@ -409,7 +408,7 @@ function start() {
 		}
 
 		//window.requestAnimationFrame(draw);
-		const FPS = 30;
+		const FPS = 144;
 		setTimeout(() => { requestAnimationFrame(draw); }, 1000 / FPS);
 	}
 
@@ -498,8 +497,6 @@ function start() {
 		];
 
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-
-
 		n_draw = points_;
 	}
 
@@ -546,5 +543,4 @@ function start() {
 		let uniProj = gl.getUniformLocation(program, 'proj');
 		gl.uniformMatrix4fv(uniProj, false, proj);
 	}
-
 }
