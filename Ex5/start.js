@@ -121,7 +121,7 @@ function start() {
 		void main(void)
 		{
 			//frag_color = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.5);
-			frag_color = texture(texture1, TexCoord) * vec4(Color, 1.0);
+			frag_color = texture(texture1, TexCoord);// * vec4(Color, 1.0);
 			//frag_color = vec4(Color, 1.0);
 		}
 	`;
@@ -241,7 +241,7 @@ function start() {
 	let cameraUp = glm.vec3(0, 1, 0);
 
 	function ustaw_kamere() {
-		let cameraSpeed = 0.002 * elapsedTime;
+		let cameraSpeed = 0.01 * elapsedTime;
 
 		if (pressedKey["ArrowUp"]) {
 			cameraPos.x += cameraSpeed * cameraFront.x;
@@ -424,11 +424,11 @@ function start() {
 		// gl.drawArrays(gl.TRIANGLES, 0, n_draw);
 
 		//2
-		// gl.bindTexture(gl.TEXTURE_2D, texture1);
-		// gl.drawArrays(gl.TRIANGLES, 0, n_draw/2);
+		gl.bindTexture(gl.TEXTURE_2D, texture1);
+		gl.drawArrays(gl.TRIANGLES, 0, n_draw/2);
 
-		// gl.bindTexture(gl.TEXTURE_2D, texture2);
-		// gl.drawArrays(gl.TRIANGLES, n_draw/2, n_draw);
+		gl.bindTexture(gl.TEXTURE_2D, texture2);
+		gl.drawArrays(gl.TRIANGLES, n_draw/2, n_draw);
 
 		//3
 		// gl.activeTexture(gl.TEXTURE0);
