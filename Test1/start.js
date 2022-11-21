@@ -1,3 +1,10 @@
+const howManyBuffers = 6;
+let howManyLoaded = 0;
+
+const buffer = [];
+let points = [];
+let verticles = [];
+
 async function loadFile(file) {
 	text = await file.text();
 	text = text.replaceAll('/', ' ');
@@ -66,8 +73,11 @@ async function loadFile(file) {
 		vert_array.push(coords[triangles[i][7] - 1][0]);
 		vert_array.push(coords[triangles[i][7] - 1][1]);
 	}
-	n_draw = triangles.length * 3;
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vert_array), gl.STATIC_DRAW);
+	points[howManyLoaded] = triangles.length * 3;
+	verticles[howManyLoaded] = vert_array;
+	//gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vert_array), gl.STATIC_DRAW);
+	howManyLoaded++;
+	console.log("Loaded " + howManyLoaded + " of " + howManyBuffers);
 }
 
 let gl;
@@ -180,30 +190,9 @@ function start() {
 	}
 	//****************************************************************
 
-	const buffer = gl.createBuffer();
-	//gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-	const buffer2 = gl.createBuffer();
-	const buffer3 = gl.createBuffer();
-	const buffer4 = gl.createBuffer();
-	const buffer5 = gl.createBuffer();
-
-	n_draw = 36;
-	//cube();
-
-	// dane wierzchołkowe -------------------------------------------------------------------------
-	const positionAttrib = gl.getAttribLocation(program, "position");
-	gl.enableVertexAttribArray(positionAttrib);
-	gl.vertexAttribPointer(positionAttrib, 3, gl.FLOAT, false, 8 * 4, 0);
-
-	const colorAttrib = gl.getAttribLocation(program, "color");
-	gl.enableVertexAttribArray(colorAttrib);
-	gl.vertexAttribPointer(colorAttrib, 3, gl.FLOAT, false, 8 * 4, 3 * 4);
-
-	const texCoord = gl.getAttribLocation(program, "aTexCoord");
-	gl.enableVertexAttribArray(texCoord);
-	gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
-
-	//-----------------------------------------------------------------------------------------------
+	for (let i = 0; i < howManyBuffers; i++) {
+		buffer[i] = gl.createBuffer();
+	}
 
 	// FPS-y ----------------------------------------------------------------------------------------
 
@@ -316,8 +305,6 @@ function start() {
 		cameraFront = glm.normalize(front);
 	}
 
-	//ustaw_kamere_mysz();
-
 	//-----------------------------------------------------------------------------------------------
 
 
@@ -386,54 +373,11 @@ function start() {
 	gl.uniform1i(gl.getUniformLocation(program, "texture2"), 1);
 
 	//-----------------------------------------------------------------------------------------------
-	gl.enable(gl.DEPTH_TEST);
+
 	///Z-BUFFER
+	gl.enable(gl.DEPTH_TEST);
 
 	draw();
-
-	var vertices = [
-		-0.5, -0.5, -0.5, 0.0, 0.0, 0.0, 0.0, 0.0,
-		0.5, -0.5, -0.5, 0.0, 0.0, 1.0, 1.0, 0.0,
-		0.5, 0.5, -0.5, 0.0, 1.0, 1.0, 1.0, 1.0,
-		0.5, 0.5, -0.5, 0.0, 1.0, 1.0, 1.0, 1.0,
-		-0.5, 0.5, -0.5, 0.0, 1.0, 0.0, 0.0, 1.0,
-		-0.5, -0.5, -0.5, 0.0, 0.0, 0.0, 0.0, 0.0,
-
-		-0.5, -0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0,
-		0.5, -0.5, 0.5, 1.0, 0.0, 1.0, 1.0, 0.0,
-		0.5, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0,
-		0.5, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0,
-		-0.5, 0.5, 0.5, 0.0, 1.0, 0.0, 0.0, 1.0,
-		-0.5, -0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0,
-
-		-0.5, 0.5, 0.5, 1.0, 0.0, 1.0, 0.0, 0.0,
-		-0.5, 0.5, -0.5, 1.0, 1.0, 1.0, 1.0, 0.0,
-		-0.5, -0.5, -0.5, 0.0, 1.0, 0.0, 1.0, 1.0,
-		-0.5, -0.5, -0.5, 0.0, 1.0, 0.0, 1.0, 1.0,
-		-0.5, -0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 1.0,
-		-0.5, 0.5, 0.5, 1.0, 0.0, 1.0, 0.0, 0.0,
-
-		0.5, 0.5, 0.5, 1.0, 0.0, 1.0, 0.0, 0.0,
-		0.5, 0.5, -0.5, 1.0, 1.0, 1.0, 1.0, 0.0,
-		0.5, -0.5, -0.5, 0.0, 1.0, 0.0, 1.0, 1.0,
-		0.5, -0.5, -0.5, 0.0, 1.0, 0.0, 1.0, 1.0,
-		0.5, -0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 1.0,
-		0.5, 0.5, 0.5, 1.0, 0.0, 1.0, 0.0, 0.0,
-
-		-0.5, -0.5, -0.5, 0.0, 1.0, 0.0, 0.0, 0.0,
-		0.5, -0.5, -0.5, 1.0, 1.0, 1.0, 1.0, 0.0,
-		0.5, -0.5, 0.5, 1.0, 0.0, 1.0, 1.0, 1.0,
-		0.5, -0.5, 0.5, 1.0, 0.0, 1.0, 1.0, 1.0,
-		-0.5, -0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 1.0,
-		-0.5, -0.5, -0.5, 0.0, 1.0, 0.0, 0.0, 0.0,
-
-		-0.5, 0.5, -0.5, 0.0, 1.0, 0.0, 0.0, 0.0,
-		0.5, 0.5, -0.5, 1.0, 1.0, 1.0, 1.0, 0.0,
-		0.5, 0.5, 0.5, 1.0, 0.0, 1.0, 1.0, 1.0,
-		0.5, 0.5, 0.5, 1.0, 0.0, 1.0, 1.0, 1.0,
-		-0.5, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 1.0,
-		-0.5, 0.5, -0.5, 0.0, 1.0, 0.0, 0.0, 0.0
-	];
 
 	function draw() {
 		elapsedTime = performance.now() - startTime;
@@ -453,57 +397,137 @@ function start() {
 		gl.clearColor(0, 0, 0, 1);
 		gl.clear(gl.COLOR_BUFFER_BIT);
 
-		///start
+		//console.log(verticles);
 
-		gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+		/////////0000000000000000000000000000000000000000000000000000000000
+		if (verticles[0]) {
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer[0]);
 
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticles[0]), gl.STATIC_DRAW);
 
-		const positionAttrib = gl.getAttribLocation(program, "position");
-		gl.enableVertexAttribArray(positionAttrib);
-		gl.vertexAttribPointer(positionAttrib, 3, gl.FLOAT, false, 8 * 4, 0);
-	
-		const colorAttrib = gl.getAttribLocation(program, "color");
-		gl.enableVertexAttribArray(colorAttrib);
-		gl.vertexAttribPointer(colorAttrib, 3, gl.FLOAT, false, 8 * 4, 3 * 4);
-	
-		const texCoord = gl.getAttribLocation(program, "aTexCoord");
-		gl.enableVertexAttribArray(texCoord);
-		gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
+			const positionAttrib = gl.getAttribLocation(program, "position");
+			gl.enableVertexAttribArray(positionAttrib);
+			gl.vertexAttribPointer(positionAttrib, 3, gl.FLOAT, false, 8 * 4, 0);
 
-		gl.bindTexture(gl.TEXTURE_2D, texture1);
-		gl.drawArrays(gl.TRIANGLES, 0, n_draw / 2);
+			const colorAttrib = gl.getAttribLocation(program, "color");
+			gl.enableVertexAttribArray(colorAttrib);
+			gl.vertexAttribPointer(colorAttrib, 3, gl.FLOAT, false, 8 * 4, 3 * 4);
 
-		// gl.bindTexture(gl.TEXTURE_2D, texture2);
-		// gl.drawArrays(gl.TRIANGLES, n_draw / 2, n_draw);
-		 
-		//koniec
+			const texCoord = gl.getAttribLocation(program, "aTexCoord");
+			gl.enableVertexAttribArray(texCoord);
+			gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
 
-		///start
+			gl.bindTexture(gl.TEXTURE_2D, texture1);
+			gl.drawArrays(gl.TRIANGLES, 0, points[0] / 2);
 
-		gl.bindBuffer(gl.ARRAY_BUFFER, buffer2);
+			gl.bindTexture(gl.TEXTURE_2D, texture2);
+			gl.drawArrays(gl.TRIANGLES, points[0] / 2, points[0]);
+		}
+		/////////0000000000000000000000000000000000000000000000000000000000
 
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+		/////////1111111111111111111111111111111111111111111111111111111111
+		if (verticles[1]) {
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer[1]);
 
-		const positionAttrib2 = gl.getAttribLocation(program, "position");
-		gl.enableVertexAttribArray(positionAttrib2);
-		gl.vertexAttribPointer(positionAttrib2, 3, gl.FLOAT, false, 8 * 4, 0);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticles[1]), gl.STATIC_DRAW);
 
-		const colorAttrib2 = gl.getAttribLocation(program, "color");
-		gl.enableVertexAttribArray(colorAttrib2);
-		gl.vertexAttribPointer(colorAttrib2, 3, gl.FLOAT, false, 8 * 4, 3 * 4);
+			const positionAttrib2 = gl.getAttribLocation(program, "position");
+			gl.enableVertexAttribArray(positionAttrib2);
+			gl.vertexAttribPointer(positionAttrib2, 3, gl.FLOAT, false, 8 * 4, 0);
 
-		const texCoord2 = gl.getAttribLocation(program, "aTexCoord");
-		gl.enableVertexAttribArray(texCoord2);
-		gl.vertexAttribPointer(texCoord2, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
+			const colorAttrib2 = gl.getAttribLocation(program, "color");
+			gl.enableVertexAttribArray(colorAttrib2);
+			gl.vertexAttribPointer(colorAttrib2, 3, gl.FLOAT, false, 8 * 4, 3 * 4);
 
-		// gl.bindTexture(gl.TEXTURE_2D, texture1);
-		// gl.drawArrays(gl.TRIANGLES, 0, n_draw / 2);
+			const texCoord2 = gl.getAttribLocation(program, "aTexCoord");
+			gl.enableVertexAttribArray(texCoord2);
+			gl.vertexAttribPointer(texCoord2, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
 
-		gl.bindTexture(gl.TEXTURE_2D, texture2);
-		gl.drawArrays(gl.TRIANGLES, n_draw / 2, n_draw);
+			gl.bindTexture(gl.TEXTURE_2D, texture1);
+			gl.drawArrays(gl.TRIANGLES, 0, points[1] / 2);
 
-				//koniec
+			gl.bindTexture(gl.TEXTURE_2D, texture2);
+			gl.drawArrays(gl.TRIANGLES, points[1] / 2, points[1]);
+		}
+		/////////1111111111111111111111111111111111111111111111111111111111
+
+		/////////2222222222222222222222222222222222222222222222222222222222
+		if (verticles[1]) {
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer[2]);
+
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticles[2]), gl.STATIC_DRAW);
+
+			const positionAttrib2 = gl.getAttribLocation(program, "position");
+			gl.enableVertexAttribArray(positionAttrib2);
+			gl.vertexAttribPointer(positionAttrib2, 3, gl.FLOAT, false, 8 * 4, 0);
+
+			const colorAttrib2 = gl.getAttribLocation(program, "color");
+			gl.enableVertexAttribArray(colorAttrib2);
+			gl.vertexAttribPointer(colorAttrib2, 3, gl.FLOAT, false, 8 * 4, 3 * 4);
+
+			const texCoord2 = gl.getAttribLocation(program, "aTexCoord");
+			gl.enableVertexAttribArray(texCoord2);
+			gl.vertexAttribPointer(texCoord2, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
+
+			gl.bindTexture(gl.TEXTURE_2D, texture1);
+			gl.drawArrays(gl.TRIANGLES, 0, points[2] / 2);
+
+			gl.bindTexture(gl.TEXTURE_2D, texture2);
+			gl.drawArrays(gl.TRIANGLES, points[2] / 2, points[2]);
+		}
+		/////////2222222222222222222222222222222222222222222222222222222222
+
+		/////////3333333333333333333333333333333333333333333333333333333333
+		if (verticles[1]) {
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer[3]);
+
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticles[3]), gl.STATIC_DRAW);
+
+			const positionAttrib2 = gl.getAttribLocation(program, "position");
+			gl.enableVertexAttribArray(positionAttrib2);
+			gl.vertexAttribPointer(positionAttrib2, 3, gl.FLOAT, false, 8 * 4, 0);
+
+			const colorAttrib2 = gl.getAttribLocation(program, "color");
+			gl.enableVertexAttribArray(colorAttrib2);
+			gl.vertexAttribPointer(colorAttrib2, 3, gl.FLOAT, false, 8 * 4, 3 * 4);
+
+			const texCoord2 = gl.getAttribLocation(program, "aTexCoord");
+			gl.enableVertexAttribArray(texCoord2);
+			gl.vertexAttribPointer(texCoord2, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
+
+			gl.bindTexture(gl.TEXTURE_2D, texture1);
+			gl.drawArrays(gl.TRIANGLES, 0, points[3] / 2);
+
+			gl.bindTexture(gl.TEXTURE_2D, texture2);
+			gl.drawArrays(gl.TRIANGLES, points[3] / 2, points[3]);
+		}
+		/////////3333333333333333333333333333333333333333333333333333333333
+
+		/////////4444444444444444444444444444444444444444444444444444444444
+		if (verticles[1]) {
+			gl.bindBuffer(gl.ARRAY_BUFFER, buffer[4]);
+
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticles[4]), gl.STATIC_DRAW);
+
+			const positionAttrib2 = gl.getAttribLocation(program, "position");
+			gl.enableVertexAttribArray(positionAttrib2);
+			gl.vertexAttribPointer(positionAttrib2, 3, gl.FLOAT, false, 8 * 4, 0);
+
+			const colorAttrib2 = gl.getAttribLocation(program, "color");
+			gl.enableVertexAttribArray(colorAttrib2);
+			gl.vertexAttribPointer(colorAttrib2, 3, gl.FLOAT, false, 8 * 4, 3 * 4);
+
+			const texCoord2 = gl.getAttribLocation(program, "aTexCoord");
+			gl.enableVertexAttribArray(texCoord2);
+			gl.vertexAttribPointer(texCoord2, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
+
+			gl.bindTexture(gl.TEXTURE_2D, texture1);
+			gl.drawArrays(gl.TRIANGLES, 0, points[4] / 2);
+
+			gl.bindTexture(gl.TEXTURE_2D, texture2);
+			gl.drawArrays(gl.TRIANGLES, points[4] / 2, points[4]);
+		}
+		/////////4444444444444444444444444444444444444444444444444444444444
 
 		gl.viewport(0, 0, canvas.width, canvas.height);
 
@@ -530,56 +554,4 @@ function start() {
 				break;
 		}
 	}, false);
-
-	function cube() {
-
-		let points_ = 36;
-
-		var vertices = [
-			-0.5, -0.5, -0.5, 0.0, 0.0, 0.0, 0.0, 0.0,
-			0.5, -0.5, -0.5, 0.0, 0.0, 1.0, 1.0, 0.0,
-			0.5, 0.5, -0.5, 0.0, 1.0, 1.0, 1.0, 1.0,
-			0.5, 0.5, -0.5, 0.0, 1.0, 1.0, 1.0, 1.0,
-			-0.5, 0.5, -0.5, 0.0, 1.0, 0.0, 0.0, 1.0,
-			-0.5, -0.5, -0.5, 0.0, 0.0, 0.0, 0.0, 0.0,
-
-			-0.5, -0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0,
-			0.5, -0.5, 0.5, 1.0, 0.0, 1.0, 1.0, 0.0,
-			0.5, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0,
-			0.5, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0,
-			-0.5, 0.5, 0.5, 0.0, 1.0, 0.0, 0.0, 1.0,
-			-0.5, -0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0,
-
-			-0.5, 0.5, 0.5, 1.0, 0.0, 1.0, 0.0, 0.0,
-			-0.5, 0.5, -0.5, 1.0, 1.0, 1.0, 1.0, 0.0,
-			-0.5, -0.5, -0.5, 0.0, 1.0, 0.0, 1.0, 1.0,
-			-0.5, -0.5, -0.5, 0.0, 1.0, 0.0, 1.0, 1.0,
-			-0.5, -0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 1.0,
-			-0.5, 0.5, 0.5, 1.0, 0.0, 1.0, 0.0, 0.0,
-
-			0.5, 0.5, 0.5, 1.0, 0.0, 1.0, 0.0, 0.0,
-			0.5, 0.5, -0.5, 1.0, 1.0, 1.0, 1.0, 0.0,
-			0.5, -0.5, -0.5, 0.0, 1.0, 0.0, 1.0, 1.0,
-			0.5, -0.5, -0.5, 0.0, 1.0, 0.0, 1.0, 1.0,
-			0.5, -0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 1.0,
-			0.5, 0.5, 0.5, 1.0, 0.0, 1.0, 0.0, 0.0,
-
-			-0.5, -0.5, -0.5, 0.0, 1.0, 0.0, 0.0, 0.0,
-			0.5, -0.5, -0.5, 1.0, 1.0, 1.0, 1.0, 0.0,
-			0.5, -0.5, 0.5, 1.0, 0.0, 1.0, 1.0, 1.0,
-			0.5, -0.5, 0.5, 1.0, 0.0, 1.0, 1.0, 1.0,
-			-0.5, -0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 1.0,
-			-0.5, -0.5, -0.5, 0.0, 1.0, 0.0, 0.0, 0.0,
-
-			-0.5, 0.5, -0.5, 0.0, 1.0, 0.0, 0.0, 0.0,
-			0.5, 0.5, -0.5, 1.0, 1.0, 1.0, 1.0, 0.0,
-			0.5, 0.5, 0.5, 1.0, 0.0, 1.0, 1.0, 1.0,
-			0.5, 0.5, 0.5, 1.0, 0.0, 1.0, 1.0, 1.0,
-			-0.5, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 1.0,
-			-0.5, 0.5, -0.5, 0.0, 1.0, 0.0, 0.0, 0.0
-		];
-
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-		n_draw = points_;
-	}
 }
