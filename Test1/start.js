@@ -409,10 +409,6 @@ function start() {
 			gl.enableVertexAttribArray(positionAttrib);
 			gl.vertexAttribPointer(positionAttrib, 3, gl.FLOAT, false, 8 * 4, 0);
 
-			const colorAttrib = gl.getAttribLocation(program, "color");
-			gl.enableVertexAttribArray(colorAttrib);
-			gl.vertexAttribPointer(colorAttrib, 3, gl.FLOAT, false, 8 * 4, 3 * 4);
-
 			const texCoord = gl.getAttribLocation(program, "aTexCoord");
 			gl.enableVertexAttribArray(texCoord);
 			gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
@@ -431,17 +427,13 @@ function start() {
 
 			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticles[1]), gl.STATIC_DRAW);
 
-			const positionAttrib2 = gl.getAttribLocation(program, "position");
-			gl.enableVertexAttribArray(positionAttrib2);
-			gl.vertexAttribPointer(positionAttrib2, 3, gl.FLOAT, false, 8 * 4, 0);
+			const positionAttrib = gl.getAttribLocation(program, "position");
+			gl.enableVertexAttribArray(positionAttrib);
+			gl.vertexAttribPointer(positionAttrib, 3, gl.FLOAT, false, 8 * 4, 0);
 
-			const colorAttrib2 = gl.getAttribLocation(program, "color");
-			gl.enableVertexAttribArray(colorAttrib2);
-			gl.vertexAttribPointer(colorAttrib2, 3, gl.FLOAT, false, 8 * 4, 3 * 4);
-
-			const texCoord2 = gl.getAttribLocation(program, "aTexCoord");
-			gl.enableVertexAttribArray(texCoord2);
-			gl.vertexAttribPointer(texCoord2, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
+			const texCoord = gl.getAttribLocation(program, "aTexCoord");
+			gl.enableVertexAttribArray(texCoord);
+			gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
 
 			gl.bindTexture(gl.TEXTURE_2D, texture1);
 			gl.drawArrays(gl.TRIANGLES, 0, points[1] / 2);
@@ -452,22 +444,18 @@ function start() {
 		/////////1111111111111111111111111111111111111111111111111111111111
 
 		/////////2222222222222222222222222222222222222222222222222222222222
-		if (verticles[1]) {
+		if (verticles[2]) {
 			gl.bindBuffer(gl.ARRAY_BUFFER, buffer[2]);
 
 			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticles[2]), gl.STATIC_DRAW);
 
-			const positionAttrib2 = gl.getAttribLocation(program, "position");
-			gl.enableVertexAttribArray(positionAttrib2);
-			gl.vertexAttribPointer(positionAttrib2, 3, gl.FLOAT, false, 8 * 4, 0);
+			const positionAttrib = gl.getAttribLocation(program, "position");
+			gl.enableVertexAttribArray(positionAttrib);
+			gl.vertexAttribPointer(positionAttrib, 3, gl.FLOAT, false, 8 * 4, 0);
 
-			const colorAttrib2 = gl.getAttribLocation(program, "color");
-			gl.enableVertexAttribArray(colorAttrib2);
-			gl.vertexAttribPointer(colorAttrib2, 3, gl.FLOAT, false, 8 * 4, 3 * 4);
-
-			const texCoord2 = gl.getAttribLocation(program, "aTexCoord");
-			gl.enableVertexAttribArray(texCoord2);
-			gl.vertexAttribPointer(texCoord2, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
+			const texCoord = gl.getAttribLocation(program, "aTexCoord");
+			gl.enableVertexAttribArray(texCoord);
+			gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
 
 			gl.bindTexture(gl.TEXTURE_2D, texture1);
 			gl.drawArrays(gl.TRIANGLES, 0, points[2] / 2);
@@ -478,22 +466,18 @@ function start() {
 		/////////2222222222222222222222222222222222222222222222222222222222
 
 		/////////3333333333333333333333333333333333333333333333333333333333
-		if (verticles[1]) {
+		if (verticles[3]) {
 			gl.bindBuffer(gl.ARRAY_BUFFER, buffer[3]);
 
 			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticles[3]), gl.STATIC_DRAW);
 
-			const positionAttrib2 = gl.getAttribLocation(program, "position");
-			gl.enableVertexAttribArray(positionAttrib2);
-			gl.vertexAttribPointer(positionAttrib2, 3, gl.FLOAT, false, 8 * 4, 0);
+			const positionAttrib = gl.getAttribLocation(program, "position");
+			gl.enableVertexAttribArray(positionAttrib);
+			gl.vertexAttribPointer(positionAttrib, 3, gl.FLOAT, false, 8 * 4, 0);
 
-			const colorAttrib2 = gl.getAttribLocation(program, "color");
-			gl.enableVertexAttribArray(colorAttrib2);
-			gl.vertexAttribPointer(colorAttrib2, 3, gl.FLOAT, false, 8 * 4, 3 * 4);
-
-			const texCoord2 = gl.getAttribLocation(program, "aTexCoord");
-			gl.enableVertexAttribArray(texCoord2);
-			gl.vertexAttribPointer(texCoord2, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
+			const texCoord = gl.getAttribLocation(program, "aTexCoord");
+			gl.enableVertexAttribArray(texCoord);
+			gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
 
 			gl.bindTexture(gl.TEXTURE_2D, texture1);
 			gl.drawArrays(gl.TRIANGLES, 0, points[3] / 2);
@@ -504,22 +488,18 @@ function start() {
 		/////////3333333333333333333333333333333333333333333333333333333333
 
 		/////////4444444444444444444444444444444444444444444444444444444444
-		if (verticles[1]) {
+		if (verticles[4]) {
 			gl.bindBuffer(gl.ARRAY_BUFFER, buffer[4]);
 
 			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticles[4]), gl.STATIC_DRAW);
 
-			const positionAttrib2 = gl.getAttribLocation(program, "position");
-			gl.enableVertexAttribArray(positionAttrib2);
-			gl.vertexAttribPointer(positionAttrib2, 3, gl.FLOAT, false, 8 * 4, 0);
+			const positionAttrib = gl.getAttribLocation(program, "position");
+			gl.enableVertexAttribArray(positionAttrib);
+			gl.vertexAttribPointer(positionAttrib, 3, gl.FLOAT, false, 8 * 4, 0);
 
-			const colorAttrib2 = gl.getAttribLocation(program, "color");
-			gl.enableVertexAttribArray(colorAttrib2);
-			gl.vertexAttribPointer(colorAttrib2, 3, gl.FLOAT, false, 8 * 4, 3 * 4);
-
-			const texCoord2 = gl.getAttribLocation(program, "aTexCoord");
-			gl.enableVertexAttribArray(texCoord2);
-			gl.vertexAttribPointer(texCoord2, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
+			const texCoord = gl.getAttribLocation(program, "aTexCoord");
+			gl.enableVertexAttribArray(texCoord);
+			gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
 
 			gl.bindTexture(gl.TEXTURE_2D, texture1);
 			gl.drawArrays(gl.TRIANGLES, 0, points[4] / 2);
