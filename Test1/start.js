@@ -2,11 +2,11 @@ const howManyBuffers = 5;
 let howManyLoaded = 0;
 
 const urls = [
-	"https://cdn.pixabay.com/photo/2013/09/22/19/14/brick-wall-185081_960_720.jpg",
-	"https://cdn.pixabay.com/photo/2022/06/21/19/01/coast-7276345__340.jpg",
-	"https://cdn.pixabay.com/photo/2022/06/21/19/01/coast-7276345__340.jpg",
-	"https://cdn.pixabay.com/photo/2022/06/21/19/01/coast-7276345__340.jpg",
-	"https://cdn.pixabay.com/photo/2022/06/21/19/01/coast-7276345__340.jpg"
+	"https://cdn.pixabay.com/photo/2018/07/25/20/28/concrete-3562187_960_720.jpg", //floor - concrete
+	"https://cdn.pixabay.com/photo/2017/02/07/09/02/wood-2045380_960_720.jpg", //wall - wood
+	"https://cdn.pixabay.com/photo/2017/11/09/10/41/wall-2933017_960_720.jpg", //moneky - bricks
+	"https://cdn.pixabay.com/photo/2016/07/03/14/16/paper-1494853_960_720.jpg", //torus - metal
+	"https://cdn.eso.org/images/large/armazones-road-360.jpg" //skydome - desert
 ]
 
 const buffer = [];
@@ -319,7 +319,7 @@ function start() {
 	// macierz projekcji -------------------------------------------------------------------------------
 
 	const proj = mat4.create();
-	mat4.perspective(proj, 60 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 100.0);
+	mat4.perspective(proj, 60 * Math.PI / 180, gl.canvas.clientWidth / gl.canvas.clientHeight, 0.1, 1000.0);
 
 	let uniProj = gl.getUniformLocation(program, 'proj');
 	gl.uniformMatrix4fv(uniProj, false, proj);
@@ -380,21 +380,21 @@ function start() {
 		gl.clear(gl.COLOR_BUFFER_BIT);
 
 		//console.log(verticles);
-		
+
 		for (let i = 0; i < howManyBuffers; i++) {
-			if(verticles[i]){
+			if (verticles[i]) {
 				gl.bindBuffer(gl.ARRAY_BUFFER, buffer[i]);
 
 				gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticles[i]), gl.STATIC_DRAW);
-	
+
 				const positionAttrib = gl.getAttribLocation(program, "position");
 				gl.enableVertexAttribArray(positionAttrib);
 				gl.vertexAttribPointer(positionAttrib, 3, gl.FLOAT, false, 8 * 4, 0);
-	
+
 				const texCoord = gl.getAttribLocation(program, "aTexCoord");
 				gl.enableVertexAttribArray(texCoord);
 				gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
-	
+
 				gl.bindTexture(gl.TEXTURE_2D, texture[i]);
 				gl.drawArrays(gl.TRIANGLES, 0, points[i]);
 			}
