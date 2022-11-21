@@ -1,5 +1,13 @@
-const howManyBuffers = 6;
+const howManyBuffers = 5;
 let howManyLoaded = 0;
+
+const urls = [
+	"https://cdn.pixabay.com/photo/2013/09/22/19/14/brick-wall-185081_960_720.jpg",
+	"https://cdn.pixabay.com/photo/2022/06/21/19/01/coast-7276345__340.jpg",
+	"https://cdn.pixabay.com/photo/2022/06/21/19/01/coast-7276345__340.jpg",
+	"https://cdn.pixabay.com/photo/2022/06/21/19/01/coast-7276345__340.jpg",
+	"https://cdn.pixabay.com/photo/2022/06/21/19/01/coast-7276345__340.jpg"
+]
 
 const buffer = [];
 let points = [];
@@ -316,62 +324,36 @@ function start() {
 	let uniProj = gl.getUniformLocation(program, 'proj');
 	gl.uniformMatrix4fv(uniProj, false, proj);
 
+	const texture = [];
 
-	// textury
-	const texture1 = gl.createTexture();
-	gl.bindTexture(gl.TEXTURE_2D, texture1);
-	const level = 0;
-	const internalFormat = gl.RGBA;
-	const width = 1;
-	const height = 1;
-	const border = 0;
-	const srcFormat = gl.RGBA;
-	const srcType = gl.UNSIGNED_BYTE;
-	const pixel = new Uint8Array([0, 0, 255, 255]);
-	gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
-		width, height, border, srcFormat, srcType,
-		pixel);
-	const image = new Image();
-	image.onload = function () {
-		gl.bindTexture(gl.TEXTURE_2D, texture1);
-		gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
-		gl.generateMipmap(gl.TEXTURE_2D);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-	};
-	image.crossOrigin = "";
-	image.src = "https://cdn.pixabay.com/photo/2013/09/22/19/14/brick-wall-185081_960_720.jpg";
-
-
-	const texture2 = gl.createTexture();
-	gl.bindTexture(gl.TEXTURE_2D, texture2);
-	const level2 = 0;
-	const internalFormat2 = gl.RGBA;
-	const width2 = 1;
-	const height2 = 1;
-	const border2 = 0;
-	const srcFormat2 = gl.RGBA;
-	const srcType2 = gl.UNSIGNED_BYTE;
-	const pixel2 = new Uint8Array([0, 0, 255, 255]);
-	gl.texImage2D(gl.TEXTURE_2D, level2, internalFormat2, width2, height2, border2, srcFormat2, srcType2, pixel2);
-	const image2 = new Image();
-	image2.onload = function () {
-		gl.bindTexture(gl.TEXTURE_2D, texture2);
-		gl.texImage2D(gl.TEXTURE_2D, level2, internalFormat2, srcFormat2, srcType2, image2);
-
-		gl.generateMipmap(gl.TEXTURE_2D);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-	};
-	image2.crossOrigin = "";
-	image2.src = "https://cdn.pixabay.com/photo/2022/06/21/19/01/coast-7276345__340.jpg"
-	gl.uniform1i(gl.getUniformLocation(program, "texture1"), 0);
-	gl.uniform1i(gl.getUniformLocation(program, "texture2"), 1);
-
+	for (let i = 0; i < howManyBuffers; i++) {
+		texture[i] = gl.createTexture();
+		gl.bindTexture(gl.TEXTURE_2D, texture[i]);
+		const level = 0;
+		const internalFormat = gl.RGBA;
+		const width = 1;
+		const height = 1;
+		const border = 0;
+		const srcFormat = gl.RGBA;
+		const srcType = gl.UNSIGNED_BYTE;
+		const pixel = new Uint8Array([0, 0, 255, 255]);
+		gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
+			width, height, border, srcFormat, srcType,
+			pixel);
+		const image = new Image();
+		image.onload = function () {
+			gl.bindTexture(gl.TEXTURE_2D, texture[i]);
+			gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
+			gl.generateMipmap(gl.TEXTURE_2D);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+		};
+		image.crossOrigin = "";
+		console.log(urls[i])
+		image.src = urls[i];
+	}
 	//-----------------------------------------------------------------------------------------------
 
 	///Z-BUFFER
@@ -398,116 +380,25 @@ function start() {
 		gl.clear(gl.COLOR_BUFFER_BIT);
 
 		//console.log(verticles);
+		
+		for (let i = 0; i < howManyBuffers; i++) {
+			if(verticles[i]){
+				gl.bindBuffer(gl.ARRAY_BUFFER, buffer[i]);
 
-		/////////0000000000000000000000000000000000000000000000000000000000
-		if (verticles[0]) {
-			gl.bindBuffer(gl.ARRAY_BUFFER, buffer[0]);
-
-			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticles[0]), gl.STATIC_DRAW);
-
-			const positionAttrib = gl.getAttribLocation(program, "position");
-			gl.enableVertexAttribArray(positionAttrib);
-			gl.vertexAttribPointer(positionAttrib, 3, gl.FLOAT, false, 8 * 4, 0);
-
-			const texCoord = gl.getAttribLocation(program, "aTexCoord");
-			gl.enableVertexAttribArray(texCoord);
-			gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
-
-			gl.bindTexture(gl.TEXTURE_2D, texture1);
-			gl.drawArrays(gl.TRIANGLES, 0, points[0] / 2);
-
-			gl.bindTexture(gl.TEXTURE_2D, texture2);
-			gl.drawArrays(gl.TRIANGLES, points[0] / 2, points[0]);
+				gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticles[i]), gl.STATIC_DRAW);
+	
+				const positionAttrib = gl.getAttribLocation(program, "position");
+				gl.enableVertexAttribArray(positionAttrib);
+				gl.vertexAttribPointer(positionAttrib, 3, gl.FLOAT, false, 8 * 4, 0);
+	
+				const texCoord = gl.getAttribLocation(program, "aTexCoord");
+				gl.enableVertexAttribArray(texCoord);
+				gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
+	
+				gl.bindTexture(gl.TEXTURE_2D, texture[i]);
+				gl.drawArrays(gl.TRIANGLES, 0, points[i]);
+			}
 		}
-		/////////0000000000000000000000000000000000000000000000000000000000
-
-		/////////1111111111111111111111111111111111111111111111111111111111
-		if (verticles[1]) {
-			gl.bindBuffer(gl.ARRAY_BUFFER, buffer[1]);
-
-			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticles[1]), gl.STATIC_DRAW);
-
-			const positionAttrib = gl.getAttribLocation(program, "position");
-			gl.enableVertexAttribArray(positionAttrib);
-			gl.vertexAttribPointer(positionAttrib, 3, gl.FLOAT, false, 8 * 4, 0);
-
-			const texCoord = gl.getAttribLocation(program, "aTexCoord");
-			gl.enableVertexAttribArray(texCoord);
-			gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
-
-			gl.bindTexture(gl.TEXTURE_2D, texture1);
-			gl.drawArrays(gl.TRIANGLES, 0, points[1] / 2);
-
-			gl.bindTexture(gl.TEXTURE_2D, texture2);
-			gl.drawArrays(gl.TRIANGLES, points[1] / 2, points[1]);
-		}
-		/////////1111111111111111111111111111111111111111111111111111111111
-
-		/////////2222222222222222222222222222222222222222222222222222222222
-		if (verticles[2]) {
-			gl.bindBuffer(gl.ARRAY_BUFFER, buffer[2]);
-
-			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticles[2]), gl.STATIC_DRAW);
-
-			const positionAttrib = gl.getAttribLocation(program, "position");
-			gl.enableVertexAttribArray(positionAttrib);
-			gl.vertexAttribPointer(positionAttrib, 3, gl.FLOAT, false, 8 * 4, 0);
-
-			const texCoord = gl.getAttribLocation(program, "aTexCoord");
-			gl.enableVertexAttribArray(texCoord);
-			gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
-
-			gl.bindTexture(gl.TEXTURE_2D, texture1);
-			gl.drawArrays(gl.TRIANGLES, 0, points[2] / 2);
-
-			gl.bindTexture(gl.TEXTURE_2D, texture2);
-			gl.drawArrays(gl.TRIANGLES, points[2] / 2, points[2]);
-		}
-		/////////2222222222222222222222222222222222222222222222222222222222
-
-		/////////3333333333333333333333333333333333333333333333333333333333
-		if (verticles[3]) {
-			gl.bindBuffer(gl.ARRAY_BUFFER, buffer[3]);
-
-			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticles[3]), gl.STATIC_DRAW);
-
-			const positionAttrib = gl.getAttribLocation(program, "position");
-			gl.enableVertexAttribArray(positionAttrib);
-			gl.vertexAttribPointer(positionAttrib, 3, gl.FLOAT, false, 8 * 4, 0);
-
-			const texCoord = gl.getAttribLocation(program, "aTexCoord");
-			gl.enableVertexAttribArray(texCoord);
-			gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
-
-			gl.bindTexture(gl.TEXTURE_2D, texture1);
-			gl.drawArrays(gl.TRIANGLES, 0, points[3] / 2);
-
-			gl.bindTexture(gl.TEXTURE_2D, texture2);
-			gl.drawArrays(gl.TRIANGLES, points[3] / 2, points[3]);
-		}
-		/////////3333333333333333333333333333333333333333333333333333333333
-
-		/////////4444444444444444444444444444444444444444444444444444444444
-		if (verticles[4]) {
-			gl.bindBuffer(gl.ARRAY_BUFFER, buffer[4]);
-
-			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticles[4]), gl.STATIC_DRAW);
-
-			const positionAttrib = gl.getAttribLocation(program, "position");
-			gl.enableVertexAttribArray(positionAttrib);
-			gl.vertexAttribPointer(positionAttrib, 3, gl.FLOAT, false, 8 * 4, 0);
-
-			const texCoord = gl.getAttribLocation(program, "aTexCoord");
-			gl.enableVertexAttribArray(texCoord);
-			gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, 8 * 4, 6 * 4);
-
-			gl.bindTexture(gl.TEXTURE_2D, texture1);
-			gl.drawArrays(gl.TRIANGLES, 0, points[4] / 2);
-
-			gl.bindTexture(gl.TEXTURE_2D, texture2);
-			gl.drawArrays(gl.TRIANGLES, points[4] / 2, points[4]);
-		}
-		/////////4444444444444444444444444444444444444444444444444444444444
 
 		gl.viewport(0, 0, canvas.width, canvas.height);
 
