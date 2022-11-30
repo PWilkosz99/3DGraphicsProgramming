@@ -1,0 +1,10 @@
+#VRML V3.0 utf8
+
+Shape
+{
+ appearance NULL
+ geometry Box
+ {
+ size 3 3 3
+ }
+} 
