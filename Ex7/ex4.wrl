@@ -1,18 +1,36 @@
 #VRML V2.0 utf8
-Transform   {
-    rotation 1 0 0 0.5 
-    translation 0 0 -5 
-    #scale 1 1 1
-    scale 5 1 1
-    #scale 1 2 5
-    children [
-        Shape {
-            geometry Cone {
-                bottomRadius 2.5
-                height 6.0
-                side TRUE
-                bottom TRUE
-            }
-        }
-    ] 
-} 
+DEF BASE Shape{
+	appearance Appearance{
+		material Material{
+			diffuseColor 0 1 0
+		}
+	}
+	geometry Cone{
+		bottomRadius 2.5
+		height 6.0
+	}
+}
+
+Transform{
+	scale 1.2 1.2 1.2
+	translation 10 0 -10
+	children[
+		USE BASE
+	]
+}
+
+Transform{
+	scale 0.5 0.5 0.5
+	translation -5 0 0
+	children[
+		USE BASE
+	]
+}
+
+Transform{
+	scale 0.1 0.1 0.1
+	translation -5 -2 0
+	children[
+		USE BASE
+	]
+}
