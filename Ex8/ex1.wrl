@@ -1,0 +1,22 @@
+#VRML V2.0 utf8 
+
+ DirectionalLight {
+     on TRUE
+     intensity 0.5
+     direction 1 0 0
+     color 1 0 0
+ }
+         Shape {
+             geometry Sphere {
+                 radius 5
+             }
+             appearance Appearance { 
+                 material Material {                 
+ 					  diffuseColor 1 1 1
+                 } 
+             } 
+         }
+
+Background {
+skyColor [ 0 0 0 ]
+}
