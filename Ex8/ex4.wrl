@@ -1,0 +1,67 @@
+#VRML V2.0 utf8 
+
+Transform {  
+    rotation    1 0 0 0  
+    translation 0 0 0  
+    children [  
+            DEF Stair Shape {      
+                            appearance Appearance { 
+                                material Material {                 
+                                    diffuseColor 0 1 0
+                                } 
+                            } 
+                            geometry Box {  
+                                     size 1 1 5
+                            }  
+                        }  
+            ]  
+}
+
+Transform {  
+    translation 1 1 0
+    children [ USE Stair ]  
+}
+
+Transform {  
+    translation 2 2 0
+    children [ USE Stair ]  
+}
+
+Transform {  
+    translation 3 3 0
+    children [ USE Stair ]  
+}
+
+Transform {  
+    translation 4 4 0
+    children [ USE Stair ]  
+}
+
+Transform {  
+    translation 5 5 0
+    children [ USE Stair ]  
+}
+
+# Viewpoint { 
+#  orientation 1 0 0 0.39
+#  position    -5 0 0 
+#  description "bottom" 
+# } 
+
+Viewpoint { 
+ orientation 0 1 0 -1.57
+ position    -6 0 0 
+ description "bottom" 
+} 
+
+Viewpoint { 
+ orientation 0 1 0 -1.57
+ position    -10 2 0 
+ description "front" 
+} 
+
+Viewpoint { 
+ orientation 0 1 0 3.14
+ position    3 2 -15
+ description "left" 
+} 
