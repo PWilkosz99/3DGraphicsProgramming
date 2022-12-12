@@ -8,10 +8,32 @@ Viewpoint {
 	description "Above"
 }
 
+Viewpoint {
+	fieldOfView 0.7
+	jump TRUE
+	orientation 1 0 0 0
+	position 0 20 75
+	description "Screen"
+}
+
+Viewpoint {
+	fieldOfView 0.8
+	jump TRUE
+	orientation 0 1 0 -2.355
+	position -30 20 -30
+	description "Room"
+}
+
+
 DEF Floor Transform {
 	translation 0 0 0
 	children [
 		Shape {
+			appearance Appearance{
+				material Material{
+					diffuseColor 0 1 0
+					}
+				}
 			geometry Box {
 				size 100 1 100
 			}
@@ -40,6 +62,11 @@ DEF SCREEN Transform {
 	translation 0 25 -50
 	children [ 
 		Shape {
+						appearance Appearance{
+				material Material{
+					diffuseColor 1 0 0
+					}
+				}
 			geometry Box {
 				size 100 50 2
 			}
