@@ -1,0 +1,52 @@
+#VRML V2.0 utf8
+
+Viewpoint {
+	fieldOfView 0.7
+	jump TRUE
+	orientation 1 0 0 -1.6
+	position 0 200 0
+	description "Above"
+}
+
+DEF Floor Transform {
+	translation 0 0 0
+	children [
+		Shape {
+			geometry Box {
+				size 100 1 100
+			}
+		}
+	]
+}
+
+DEF LEFT_WALL Transform {
+	rotation 0 1 0 1.57
+	translation -50 25 0
+	children [
+		Shape {
+			geometry Box {
+				size 100 50 1
+			}
+		}
+	]
+}
+
+DEF RIGHT_WALL Transform {
+	translation 100 0 0
+	children [ USE LEFT_WALL ]
+}
+
+DEF SCREEN Transform {
+	translation 0 25 -50
+	children [ 
+		Shape {
+			geometry Box {
+				size 100 50 2
+			}
+		}
+	]
+}
+
+Background {
+skyColor [ 0 0 0 ]
+}
