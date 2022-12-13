@@ -29,11 +29,11 @@ DEF Floor Transform {
 	translation 0 0 0
 	children [
 		Shape {
-			appearance Appearance{
-				material Material{
-					diffuseColor 0 1 0
-					}
-				}
+			appearance Appearance {     
+                texture ImageTexture{
+                    url "wood.jpg"
+                }
+			} 
 			geometry Box {
 				size 100 1 100
 			}
@@ -46,6 +46,11 @@ DEF LEFT_WALL Transform {
 	translation -50 25 0
 	children [
 		Shape {
+			appearance Appearance {     
+                texture ImageTexture{
+                    url "wall.jpg"
+                }
+			} 
 			geometry Box {
 				size 100 50 1
 			}
@@ -62,13 +67,40 @@ DEF SCREEN Transform {
 	translation 0 25 -50
 	children [ 
 		Shape {
-						appearance Appearance{
-				material Material{
-					diffuseColor 1 0 0
-					}
-				}
 			geometry Box {
 				size 100 50 2
+			}
+		}
+	]
+}
+
+DEF SEAT Transform{
+	translation 0 0 0
+	children [
+		Shape {
+			appearance Appearance {     
+				texture ImageTexture{
+					url "seat.jpg"
+				}
+			} 
+			geometry Box {
+				size 10 10 10
+			}
+		}
+	]
+}
+
+DEF BACKSEAT Transform{
+	translation 0 10 5	
+	children [
+		Shape {
+			appearance Appearance {     
+				texture ImageTexture{
+					url "seat.jpg"
+				}
+			} 
+			geometry Box {
+				size 10 20 2
 			}
 		}
 	]
