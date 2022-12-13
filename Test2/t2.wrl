@@ -17,10 +17,10 @@ Viewpoint {
 }
 
 Viewpoint {
-	fieldOfView 0.8
+	fieldOfView 1.2
 	jump TRUE
 	orientation 0 1 0 -2.355
-	position -30 20 -30
+	position -30 20 -50
 	description "Room"
 }
 
@@ -103,6 +103,54 @@ DEF BACKSEAT Transform{
 				size 10 20 2
 			}
 		}
+	]
+}
+
+DEF CHAIR Transform{
+	translation 20 0 0
+	children [
+		USE SEAT
+		USE BACKSEAT
+	]
+}
+
+DEF CHAIR2 Transform{
+	translation -40 0 0
+	children [
+		USE CHAIR
+	]
+}
+
+DEF CHAIR3 Transform{
+	translation -60 0 0
+	children [
+		USE CHAIR
+	]
+}
+
+DEF CHAIR4 Transform{
+	translation 20 0 0
+	children [
+		USE CHAIR
+	]
+}
+
+DEF ROW Transform{
+	translation 0 0 30
+	children [
+		USE CHAIR
+		USE CHAIR2
+		USE CHAIR3
+		USE CHAIR4
+		USE BACKSEAT
+		USE SEAT
+	]
+}
+
+DEF ROW2 Transform{
+	translation 0 0 -60
+	children [
+		USE ROW
 	]
 }
 
