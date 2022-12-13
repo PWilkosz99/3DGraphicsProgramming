@@ -24,6 +24,38 @@ Viewpoint {
 	description "Room"
 }
 
+DirectionalLight {
+	ambientIntensity 1
+	color 1 0 0
+	direction 1.57 0 0
+	intensity 1
+	on TRUE
+}
+
+Transform {
+	translation 0 50 -10
+	children [
+		SpotLight {
+			on TRUE
+			intensity 1
+			direction 0 0 0
+			color 0 1 0
+			location -8 0 0
+		}
+		Shape {
+			appearance Appearance {
+				material Material {
+					emissiveColor 0 0 0
+				}
+			}
+			geometry Sphere {
+				radius 5
+			}
+		}
+	]
+}
+
+
 
 DEF Floor Transform {
 	translation 0 0 0
@@ -42,12 +74,15 @@ DEF Floor Transform {
 }
 
 DEF LEFT_WALL Transform {
-	rotation 0 1 0 1.57
+	rotation 0 -1 0 1.57
 	translation -50 25 0
 	children [
 		Shape {
 			appearance Appearance {     
-                texture ImageTexture{
+                material Material {
+					diffuseColor 1 1 1
+				}
+				texture ImageTexture{
                     url "wall.jpg"
                 }
 			} 
@@ -60,6 +95,7 @@ DEF LEFT_WALL Transform {
 
 DEF RIGHT_WALL Transform {
 	translation 100 0 0
+	rotation 0 0 0 -1.57
 	children [ USE LEFT_WALL ]
 }
 
