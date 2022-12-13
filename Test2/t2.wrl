@@ -67,6 +67,15 @@ DEF SCREEN Transform {
 	translation 0 25 -50
 	children [ 
 		Shape {
+			appearance Appearance { 
+				texture MovieTexture {
+					loop TRUE
+					speed 1.0
+					url "sample_video.mpeg"
+					startTime 0
+					stopTime 0
+				}
+			} 
 			geometry Box {
 				size 100 50 2
 			}
